@@ -3,6 +3,23 @@
 All notable changes to this packaging project.
 Version scheme: `<upstream version>-cn.<build>`.
 
+## v0.23.0-cn.3 — 2026-11-04
+
+### Changed
+
+- **Payload slimmed**: only `zh-CN` and `en-US` Electron locale packs are shipped (−7.7 MB; 11 other
+  languages removed). `build.ps1 -KeepAllLocales` restores them.
+- **Portable build is now a self-extracting EXE** (`portable.nsi`, solid LZMA) instead of a ZIP:
+  `MarkText-0.23.0-便携版.exe` ≈ 119.5 MB, down from the 179.4 MB deflate ZIP. Pick a folder, extract, run —
+  still no registry writes, config stays in `data\`.
+- Release assets total **≈ 239 MB** (was ≈ 300 MB): installer 119.6 MB + portable 119.5 MB.
+- Installed footprint: 106 files / 481.6 MB (was 116 / 489.4 MB).
+
+### Verified
+
+- Silent install → 106 files, `locales` contains exactly `en-US.pak` + `zh-CN.pak`;
+  first launch still passes `教程\MarkText 新手教学\新手教学.md` to the app; Chinese UI intact.
+
 ## v0.23.0-cn.2 — 2026-11-04
 
 ### Added

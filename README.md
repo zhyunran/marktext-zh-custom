@@ -3,8 +3,8 @@
 [中文说明](README.zh.md) · **English**
 
 A **Chinese-localized, convenience-tuned packaging** of [MarkText](https://github.com/marktext/marktext) 0.23.0 for Windows.
-Ships as a per-user NSIS installer (no admin rights) **and** a portable ZIP, both bundled with a Chinese
-getting-started tutorial.
+Ships as a per-user NSIS installer (no admin rights) **and** a self-extracting portable build — both bundled with
+a Chinese getting-started tutorial.
 
 This repository contains **only the packaging sources and docs**. The ready-to-use binaries are attached to
 [Releases](../../releases).
@@ -13,10 +13,11 @@ This repository contains **only the packaging sources and docs**. The ready-to-u
 
 | Artifact | Size | Notes |
 | --- | --- | --- |
-| `MarkText-0.23.0-安装程序.exe` | ~121 MB | NSIS installer, no admin, custom install dir, Start-menu + desktop shortcuts |
-| `MarkText-0.23.0-便携版.zip` | ~179 MB | Unzip anywhere (USB stick friendly), config lives in `data\`, no registry writes |
+| `MarkText-0.23.0-installer.exe` | ~120 MB | NSIS installer, no admin, custom install dir, Start-menu + desktop shortcuts |
+| `MarkText-0.23.0-portable.exe` | ~120 MB | Self-extracting: pick a folder (USB stick works), no registry writes, config in `data\` |
 
-Both install the same Electron app (~489 MB on disk, 116 files) and carry the tutorial in `教程\`.
+Both unpack the same Electron app (**106 files / ~482 MB** on disk; upmarket locale packs and docs trimmed) and
+carry the tutorial in `教程\`.
 
 ## Customizations vs. upstream
 
@@ -27,19 +28,20 @@ Both install the same Electron app (~489 MB on disk, 116 files) and carry the tu
 | **First launch opens the tutorial** | Handled by `启动 MarkText.exe`, once per install (flag file). |
 | **Right-click → New → Markdown Document** | Native ShellNew registration; consistent with Office. |
 | **Single `.md` ProgId** | Older builds registered both `MarkText.Document` and `Applications\marktext.exe`, which made the *Open with* menu list three MarkText entries. |
+| **Trimmed payload** | Only `zh-CN` / `en-US` locale packs are shipped (−7.7 MB); NSIS docs/examples/help dropped from the toolchain. |
 | **Chinese tutorial bundled** | Offline-friendly: tutorial + 4 real screenshots in `教程\`. |
 
 ## Build
 
-Requirements: Windows 10/11 x64, PowerShell 5.1, .NET Framework 4.0 `csc.exe`, and a local MarkText
-installation (used as the application source) — plus the portable NSIS 3.11 under `tools\nsis-3.11\`
+Requirements: Windows 10/11 x64, PowerShell 5.1, .NET Framework 4.0 `csc.exe`, a local MarkText installation
+(used as the application source), and the portable NSIS 3.11 under `tools\nsis-3.11\`
 (download it from [nsis.sourceforge.io](https://nsis.sourceforge.io/Download); it is not committed here).
 
 ```powershell
 # installer only
 powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "C:\Users\<you>\AppData\Local\Programs\marktext"
 
-# installer + portable zip
+# installer + portable self-extractor
 powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "..." -Tutorial "path\to\tutorial" -Portable
 ```
 
@@ -47,10 +49,11 @@ powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "..." -Tutorial
 | --- | --- | --- |
 | `-AppSrc` | `%LOCALAPPDATA%\Programs\marktext` | Installed MarkText used as file source |
 | `-Tutorial` | sibling `教程` folder | Tutorial folder copied into the package |
-| `-Portable` | off | Also emit `dist\MarkText-0.23.0-便携版.zip` |
-| `-KeepStage` | off | Keep the ~489 MB staging folder for inspection |
+| `-Portable` | off | Also emit `dist\MarkText-0.23.0-便携版.exe` (self-extracting, LZMA) |
+| `-KeepAllLocales` | off | Keep every Electron locale pack (adds ~7.7 MB) |
+| `-KeepStage` | off | Keep the ~480 MB staging folder for inspection |
 
-Output goes to `dist\`. The staging folder is removed automatically.
+Output goes to `dist\`; the staging folder is removed automatically.
 
 ## Repository layout
 
@@ -58,7 +61,8 @@ Output goes to `dist\`. The staging folder is removed automatically.
 build/
   build.ps1                 one-click packaging (installer / portable)
   launcher.cs               启动 MarkText.exe — first run opens the tutorial
-  marktext-installer.nsi    NSIS script (per-user, custom dir, single ProgId, ShellNew)
+  marktext-installer.nsi    NSIS installer script (per-user, single ProgId, ShellNew)
+  portable.nsi              NSIS self-extractor for the portable build
 docs/
   安装包说明.md              end-user install notes (Chinese)
 tutorial/

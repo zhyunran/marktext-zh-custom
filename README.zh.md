@@ -3,7 +3,7 @@
 **中文** · [English](README.md)
 
 [MarkText](https://github.com/marktext/marktext) 0.23.0 的**中文本地化 + 顺手化**打包版（Windows）。
-提供两种形态：**免管理员安装包** 与 **便携版**，都自带一份中文新手教程。
+提供两种形态：**免管理员安装包** 与 **自解压便携版**，都自带一份中文新手教程。
 
 本仓库只放**打包源码与文档**；可直接使用的安装包 / 便携版在 [Releases](../../releases)。
 
@@ -11,10 +11,10 @@
 
 | 产物 | 大小 | 说明 |
 | --- | --- | --- |
-| `MarkText-0.23.0-安装程序.exe` | 约 121 MB | NSIS 安装包，免管理员、可自选目录、桌面+开始菜单快捷方式 |
-| `MarkText-0.23.0-便携版.zip` | 约 179 MB | 解压即用（U 盘友好），配置在 `data\` 里，不写注册表 |
+| `MarkText-0.23.0-installer.exe` | 约 120 MB | NSIS 安装包，免管理员、可自选目录、桌面+开始菜单快捷方式 |
+| `MarkText-0.23.0-portable.exe` | 约 120 MB | 自解压便携版：选个文件夹解压即用（U 盘也行），不写注册表，配置在 `data\` |
 
-两者装完都是同一个 Electron 应用（约 489 MB / 116 个文件），并在 `教程\` 里带教程。
+两者解出来都是同一个 Electron 应用（**106 个文件 / 约 482 MB**，已精简语言包与文档），并在 `教程\` 里带教程。
 
 ## 相比官方版的改动
 
@@ -25,6 +25,7 @@
 | **首次启动自动打开教程** | 由 `启动 MarkText.exe` 负责，每次安装只弹一次（标记文件） |
 | **右键 → 新建 → Markdown 文档** | 原生 ShellNew 注册，和 Office 一致 |
 | **`.md` 只登记一个 ProgId** | 旧版同时写 `MarkText.Document` 和 `Applications\marktext.exe`，导致「打开方式」里出现 3 个 MarkText |
+| **精简体积** | 只保留 `zh-CN` / `en-US` 语言包（省 7.7 MB）；工具链去掉 NSIS 文档/示例/帮助 |
 | **自带中文教程** | 离线友好：教程 + 4 张实拍配图都在 `教程\` |
 
 ## 打包
@@ -36,7 +37,7 @@
 # 只打安装包
 powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "C:\Users\<你>\AppData\Local\Programs\marktext"
 
-# 安装包 + 便携版
+# 安装包 + 便携版自解压
 powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "..." -Tutorial "教程目录" -Portable
 ```
 
@@ -44,8 +45,9 @@ powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "..." -Tutorial
 | --- | --- | --- |
 | `-AppSrc` | `%LOCALAPPDATA%\Programs\marktext` | 已装 MarkText，作为程序文件来源 |
 | `-Tutorial` | 同级的 `教程` 目录 | 打进包里的教程 |
-| `-Portable` | 关 | 额外产出 `dist\MarkText-0.23.0-便携版.zip` |
-| `-KeepStage` | 关 | 保留约 489 MB 的暂存目录供检查 |
+| `-Portable` | 关 | 额外产出 `dist\MarkText-0.23.0-便携版.exe`（自解压，LZMA） |
+| `-KeepAllLocales` | 关 | 保留全部 Electron 语言包（会多约 7.7 MB） |
+| `-KeepStage` | 关 | 保留约 480 MB 的暂存目录供检查 |
 
 产物在 `dist\`，暂存目录打完自动清理。
 
@@ -55,7 +57,8 @@ powershell -ExecutionPolicy Bypass -File build\build.ps1 -AppSrc "..." -Tutorial
 build/
   build.ps1                 一键打包（安装包 / 便携版）
   launcher.cs               启动 MarkText.exe：首启弹教程
-  marktext-installer.nsi    NSIS 脚本（免管理员、可改目录、单 ProgId、右键新建）
+  marktext-installer.nsi    NSIS 安装脚本（免管理员、单 ProgId、右键新建）
+  portable.nsi              NSIS 自解压脚本（便携版）
 docs/
   安装包说明.md              给使用者的安装说明
 tutorial/
