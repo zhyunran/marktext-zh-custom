@@ -2,12 +2,33 @@
 
 [中文说明](README.zh.md) · **English**
 
-A **Chinese-localized, convenience-tuned packaging** of [MarkText](https://github.com/marktext/marktext) 0.23.0 for Windows.
+A **Chinese-localized, convenience-tuned distribution** of [MarkText](https://github.com/marktext/marktext) 0.23.0 for Windows.
 Ships as a per-user NSIS installer (no admin rights) **and** a self-extracting portable build — both bundled with
 a Chinese getting-started tutorial.
 
 This repository contains **only the packaging sources and docs**. The ready-to-use binaries are attached to
 [Releases](../../releases).
+
+> ### What this is — and what it is not
+>
+> **The editor is not ours.** MarkText is upstream MIT software (© Luo Ran and contributors); Electron/Chromium
+> are theirs too. Nothing here re-implements a Markdown editor.
+>
+> What this project contributes (all of it in this repo, ~15 KB of scripts plus docs/tutorial):
+>
+> | Ours | Upstream |
+> | --- | --- |
+> | `marktext-installer.nsi` / `portable.nsi` (NSIS packaging) | the MarkText editor, `resources/app.asar` |
+> | `launcher.cs` (`启动 MarkText.exe`, first-run tutorial) | Electron runtime, Chromium |
+> | `build.ps1` (staging, locale trimming, packaging) | UI, Markdown engine, themes |
+> | shell integration (single ProgId, ShellNew "New → Markdown Document") | |
+> | Chinese tutorial + 4 screenshots + user docs | |
+> | one behavioural patch inside `app.asar` (Enter inserts a table row) | |
+>
+> Unofficial build — **not affiliated with or endorsed by** the MarkText project.
+> Size differences against the official installer are a packaging-policy choice (locale trimming, LZMA), not a
+> feature comparison.
+
 
 ## What you get
 

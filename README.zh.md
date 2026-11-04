@@ -2,10 +2,30 @@
 
 **中文** · [English](README.md)
 
-[MarkText](https://github.com/marktext/marktext) 0.23.0 的**中文本地化 + 顺手化**打包版（Windows）。
-提供两种形态：**免管理员安装包** 与 **自解压便携版**，都自带一份中文新手教程。
+[MarkText](https://github.com/marktext/marktext) 0.23.0 的**中文本地化发行版**（Windows）——
+提供**免管理员安装包** 与 **自解压便携版**，都自带一份中文新手教程。
 
 本仓库只放**打包源码与文档**；可直接使用的安装包 / 便携版在 [Releases](../../releases)。
+
+> ### 这个项目是什么、不是什么
+>
+> **编辑器本体不是我们写的。** MarkText 是上游 MIT 项目（© Luo Ran 与贡献者），Electron/Chromium 也是他们的。
+> 这里没有重新实现一个 Markdown 编辑器。
+>
+> 我们贡献的是「发行版/打包」这一层（本仓库全部内容，约 15 KB 脚本 + 文档教程）：
+>
+> | 我们的 | 上游的 |
+> | --- | --- |
+> | `marktext-installer.nsi` / `portable.nsi`（NSIS 打包） | MarkText 编辑器本体、`resources/app.asar` |
+> | `launcher.cs`（`启动 MarkText.exe`，首启弹教程） | Electron 运行时、Chromium |
+> | `build.ps1`（暂存、语言包裁剪、打包） | 界面、Markdown 引擎、主题 |
+> | 系统集成（单一 ProgId、右键新建 Markdown 文档） | |
+> | 中文教程 + 4 张实拍图 + 使用说明 | |
+> | `app.asar` 里一个行为补丁（表格内 Enter 插行） | |
+>
+> 非官方构建，**与上游项目无从属关系、未获其背书**。
+> 和官方安装包的体积差异只是打包策略不同（裁语言包、LZMA），不是功能对比。
+
 
 ## 拿到什么
 
