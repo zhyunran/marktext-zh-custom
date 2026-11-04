@@ -1,0 +1,17 @@
+# build outputs (shipped as Release assets, never committed)
+dist/
+stage/
+
+# third-party toolchain (download NSIS 3.11 yourself)
+tools/
+
+# binaries
+*.exe
+*.zip
+*.7z
+*.tgz
+*.msi
+
+# local logs / scratch
+*.log
+*.tmp
