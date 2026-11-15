@@ -1,6 +1,6 @@
 # marktext-zh-custom
 
-[中文说明](README.zh.md) · **English**
+**English** · [中文](README.zh.md)
 
 A **Chinese-localized, convenience-tuned distribution** of [MarkText](https://github.com/marktext/marktext) 0.23.0 for Windows.
 Ships as a per-user NSIS installer (no admin rights) **and** a self-extracting portable build — both bundled with
